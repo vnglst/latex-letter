@@ -1,0 +1,19 @@
+extends layout
+block content
+  .row
+    .col-md-8
+      h1="Create a PDF"
+      form.form-horizontal.well(method="post", action="/pdf")
+          .form-group
+              label.col-md-2.control-label File Name
+              .col-md-10
+                .input-group
+                  input.form-control(type="text", name="filename", placeholder="File Name")
+                  .input-group-addon=".pdf"
+          .form-group
+              label.col-md-2.control-label Text
+              .col-md-10
+                textarea.form-control(name="content", placeholder="Write some text for on your PDF!")
+          .form-group
+              .col-sm-offset-2.col-sm-10
+                input.btn.btn-default(type="submit", value="Create PDF")

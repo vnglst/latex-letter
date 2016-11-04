@@ -2,18 +2,36 @@ extends layout
 block content
   .row
     .col-md-8
-      h1="Create a PDF"
+      h1="Create a beautiful letter"
       form.form-horizontal.well(method="post", action="/pdf")
           .form-group
-              label.col-md-2.control-label File Name
+              label.col-md-2.control-label Subject
               .col-md-10
                 .input-group
-                  input.form-control(type="text", name="filename", placeholder="File Name")
-                  .input-group-addon=".pdf"
+                  input.form-control(type="text", name="subject", placeholder="My life as a soldier")
+          .form-group
+              label.col-md-2.control-label Author
+              .col-md-10
+                .input-group
+                  input.form-control(type="text", name="author", placeholder="F. Nietzsche")
+          .form-group
+              label.col-md-2.control-label City
+              .col-md-10
+                .input-group
+                  input.form-control(type="text", name="city", placeholder="Naumburg")
+          .form-group
+              label.col-md-2.control-label From
+              .col-md-10
+                .input-group
+                  input.form-control(type="text", name="from1", placeholder="Artillerieregiment, 8. Batt.")
+          .form-group
+              .col-md-offset-2.col-md-10
+                .input-group
+                  input.form-control(type="text", name="from2", placeholder="Nordstraße 15, Naumburg")
           .form-group
               label.col-md-2.control-label Text
               .col-md-10
-                textarea.form-control(name="content", placeholder="Write some text for on your PDF!")
+                textarea.form-control(rows="8", name="content", placeholder="Dear Friend,\n\nI am a bombardier in the second mounted division of the Fourth Horse Artillery.\n\nYou may well imagine how astonished I was by this revolution in my affairs, and what a violent upheaval it has made in my everyday humdrum existence.")
           .form-group
-              .col-sm-offset-2.col-sm-10
+              .col-md-offset-2.col-md-10
                 input.btn.btn-default(type="submit", value="Create PDF")

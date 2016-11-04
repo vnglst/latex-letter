@@ -1,0 +1,130 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[$fontsize$, a4paper]{article}
+\usepackage{fontspec}
+
+% LAYOUT
+%--------------------------------
+\usepackage{geometry}
+\geometry{$geometry$}
+
+% No page numbers
+\pagenumbering{gobble}
+
+% Left align
+\usepackage[document]{ragged2e}
+
+% Trim excessive whitespace before lists
+\usepackage{enumitem}
+\setlist{nolistsep}
+
+$if(letterhead)$
+\usepackage{wallpaper}
+% \ThisULCornerWallPaper{1}{letterhead-front.pdf} % Uncomment to include a different letterhead on the first page
+\ULCornerWallPaper{1}{letterhead.pdf}
+$endif$
+
+% LANGUAGE
+%--------------------------------
+$if(lang)$
+\usepackage{polyglossia}
+\setmainlanguage{$lang$}
+$endif$
+
+% TYPOGRAPHY
+%--------------------------------
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage[protrusion=true,final]{microtype}
+
+% converts LaTeX specials (quotes, dashes etc.) to Unicode
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont [Ligatures={Common}, Numbers={OldStyle}]{$mainfont$}
+\setsansfont[Scale=0.9]{$altfont$}
+\setmonofont[Scale=0.8]{$monofont$}
+
+% Set paragraph break
+\setlength{\parskip}{1em}
+
+% Custom ampersand
+\newcommand{\amper}{{\fontspec[Scale=.95]{$mainfont$}\selectfont\itshape\&}}
+
+$if(mainfont)$
+    \setmainfont{$mainfont$}
+$endif$
+$if(altfont)$
+    \setsansfont{$altfont$}
+$endif$
+
+% Command required by how Pandoc handles the list conversion
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% PDF SETUP
+%--------------------------------
+\usepackage[xetex, bookmarks, colorlinks, breaklinks]{hyperref}
+\hypersetup
+{
+  pdfauthor={$author$},
+  pdfsubject={$subject$},
+  pdftitle={$subject$},
+  colorlinks,breaklinks,
+  filecolor=black,
+  urlcolor=[rgb]{0.117,0.682,0.858},
+  linkcolor=[rgb]{0.117,0.682,0.858},
+  linkcolor=[rgb]{0.117,0.682,0.858},
+  citecolor=[rgb]{0.117,0.682,0.858}
+}
+
+% To display custom date in the example
+$if(customdate)$
+\usepackage[$lang$]{datetime2}
+\DTMsavedate{customdate}{$customdate$}
+$endif$
+
+% DOCUMENT
+%--------------------------------
+\begin{document}
+\small
+\textsc{\textbf{$author$}}
+$for(from)$
+\textbullet{} \textsc{$from$}
+$endfor$
+
+\vspace{1em}
+
+\normalsize \sffamily
+$for(to)$
+$to$\\
+$endfor$
+
+\vspace{3em}
+
+\rmfamily
+\begin{flushright}
+  $city$, $if(customdate)$\DTMusedate{customdate}$else$\today$endif$
+\end{flushright}
+
+\vspace{1em}
+
+$if(subject)$
+\textbf{$subject$}
+$endif$
+
+\vspace{1em}
+
+$body$
+
+\begin{FlushRight}
+  \IfFileExists{signature.pdf}
+  {
+    \includegraphics[height=5.5\baselineskip]{signature.pdf} \par
+  }
+  {
+    \vspace{5.5\baselineskip}
+  }
+  $author$
+\end{FlushRight}
+
+\end{document}

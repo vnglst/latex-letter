@@ -51,6 +51,7 @@ to:
 - ${to5}
 
 # Settings
+# Add fonts available in Linux
 mainfont: Hoefler Text
 altfont: Helvetica Neue
 monofont: Courier

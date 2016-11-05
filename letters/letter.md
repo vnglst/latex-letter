@@ -1,11 +1,11 @@
 
 ---
-subject: 
-author: Koen van Gilst
-city: Utrecht
+subject:
+author: Koen
+city:
 from:
-- Artillerieregiment, 8. Batt.
-- Nordstraße 15, Naumburg
+-
+-
 to:
 - Carl Freiherr von Gersdorff
 - Stresow-Kaserne I
@@ -14,8 +14,8 @@ to:
 - Deutschland
 
 # Settings
-mainfont: Hoefler Text
-altfont: Helvetica Neue
+mainfont: Courier
+altfont: Courier
 monofont: Courier
 lang: english
 fontsize: 10pt
@@ -23,4 +23,3 @@ geometry: a4paper, left=35mm, right=35mm, top=50mm, bottom=25mm
 # letterhead: true
 # customdate: YYYY-MM-DD
 ---
-

@@ -1,5 +1,8 @@
 FROM node:latest
 
+RUN apt-get update && apt-get install -y texlive-base texlive-xetex biber latexmk make pandoc
+RUN pandoc
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

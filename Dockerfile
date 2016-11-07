@@ -1,19 +1,25 @@
-FROM node:latest
+FROM strages/pandoc-docker
 
-RUN apt-get update && apt-get install -y texlive-base texlive-xetex biber latexmk make pandoc
-RUN pandoc
+RUN apt-get update && apt-get install -y git git-core curl
+RUN apt-get install -y nodejs npm
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-# Create app directory
-RUN mkdir -p /usr/src/app
+# Adding app
+ADD . /usr/src/app
 WORKDIR /usr/src/app
 
-# Install app dependencies
-RUN npm install -g yarn
-COPY package.json /usr/src/app/
-RUN yarn
+# Adding fonts to system
+ADD ./fonts /usr/share/fonts/opentype/
+RUN fc-cache -f -v
 
-# Bundle app source
-COPY . /usr/src/app
+# Installing latest node
+RUN npm install n -g
+RUN n latest
+
+# Installing yarn
+RUN npm install -g yarn
+RUN yarn
 
 EXPOSE 3000
 CMD [ "yarn", "start" ]

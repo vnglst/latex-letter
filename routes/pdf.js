@@ -32,9 +32,8 @@ const formBodyToMarkDown = ({
   to2 = `Stresow-Kaserne I`,
   to3 = `Grenadierstraße 13–16`,
   to4 = `13597 Spandau`,
-  to5 = `Deutschland`,
-
 }) => {
+content = content || defaultText
 const markdown = `
 ---
 subject: ${subject}
@@ -48,7 +47,6 @@ to:
 - ${to2}
 - ${to3}
 - ${to4}
-- ${to5}
 
 # Settings
 mainfont: Hoefler Text
@@ -62,18 +60,16 @@ geometry: a4paper, left=35mm, right=35mm, top=50mm, bottom=25mm
 ---
 ${content}
 `
+
 return markdown
 }
 
 router.post('/', (req, res) => {
-  const filePath = 'letters/letter.md'
+  const filePath = `letters/letter.md`
   const letter = formBodyToMarkDown(req.body)
-  const cmd = 'cd letters; make'
+  const cmd = `cd letters; make`
   fs.writeFile(filePath, letter, () => {
     exec(cmd, (error, stdout, stderr) => {
-      console.log(error);
-      console.log(stdout);
-      console.log(stderr);
       const outputPDF = 'letters/output.pdf'
       const readStream = fs.createReadStream(outputPDF)
       readStream.pipe(res)

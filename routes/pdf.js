@@ -23,7 +23,7 @@ Your devoted friend,
 
 const formBodyToMarkDown = ({
   content = defaultText,
-  subject,
+  subject = ``,
   author = `F. Nietzsche`,
   city = `Naumburg`,
   from1 = `Artillerieregiment, 8. Batt.`,
@@ -51,7 +51,6 @@ to:
 - ${to5}
 
 # Settings
-# Add fonts available in Linux
 mainfont: Hoefler Text
 altfont: Helvetica Neue
 monofont: Courier
@@ -72,6 +71,9 @@ router.post('/', (req, res) => {
   const cmd = 'cd letters; make'
   fs.writeFile(filePath, letter, () => {
     exec(cmd, (error, stdout, stderr) => {
+      console.log(error);
+      console.log(stdout);
+      console.log(stderr);
       const outputPDF = 'letters/output.pdf'
       const readStream = fs.createReadStream(outputPDF)
       readStream.pipe(res)

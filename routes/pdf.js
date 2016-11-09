@@ -1,8 +1,40 @@
 const express = require('express')
 const router = express.Router()
 const fs = require('fs')
-const exec = require('child_process')
-  .exec
+const
+  spawn = require('child_process')
+  .spawnSync
+
+const cleanup = (inputFile, outputFile) => {
+  spawn(`rm`, [inputFile])
+  spawn(`rm`, [outputFile])
+}
+
+const makePDF = (inputFile, outputFile) => {
+  const pandoc = spawn(`pandoc`, [`${inputFile}`,
+      `-o`,
+      `${outputFile}`,
+       `--template=letter/template.tex`,
+        `--latex-engine=xelatex`])
+  const error = pandoc.stderr.toString()
+  if (error) {
+    console.log(error)
+  }
+}
+
+router.post('/', (req, res) => {
+  const timestamp = new Date()
+    .getTime()
+  const inputFile = `tmp/letter${timestamp}.md`
+  const outputFile = `tmp/output${timestamp}.pdf`
+  const letterContent = formBodyToMarkDown(req.body)
+  fs.writeFile(inputFile, letterContent, () => {
+    makePDF(inputFile, outputFile)
+    const readStream = fs.createReadStream(outputFile)
+    readStream.pipe(res)
+    cleanup(inputFile, outputFile)
+  })
+})
 
 const formBodyToMarkDown = ({
   content,
@@ -15,9 +47,7 @@ const formBodyToMarkDown = ({
   to2,
   to3,
   to4
-}) => {
-  const markdown = `
----
+}) => (`---
 subject: ${subject}
 author: ${author}
 city: ${city}
@@ -41,26 +71,6 @@ geometry: a4paper, left=35mm, right=35mm, top=50mm, bottom=25mm
 # customdate: YYYY-MM-DD
 ---
 ${content}
-`
-
-  return markdown
-}
-
-router.post('/', (req, res) => {
-  const timestamp = new Date()
-    .getTime()
-  const inputFile = `letters/letter${timestamp}.md`
-  const outputFile = `letters/output${timestamp}.pdf`
-  const letterContent = formBodyToMarkDown(req.body)
-  const cmd = `cd letters; pandoc ${inputFile} -o ${outputFile} --template=template.tex --latex-engine=xelatex`
-  fs.writeFile(inputFile, letterContent, () => {
-    exec(cmd, (err, stdout, stderr) => {
-      if (stderr) return res.send(stderr)
-      if (err) return res.send(err)
-      const readStream = fs.createReadStream(outputFile)
-      readStream.pipe(res)
-    })
-  })
-})
+`)
 
 module.exports = router

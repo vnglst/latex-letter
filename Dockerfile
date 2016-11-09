@@ -1,25 +1,23 @@
-FROM strages/pandoc-docker
+FROM vnglst/pandoc-nodejs-docker
 
-RUN apt-get update && apt-get install -y git git-core curl
-RUN apt-get install -y nodejs npm
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN ln -s /usr/local/bin/node /usr/local/bin/nodejs
-
-# Adding app
-ADD . /usr/src/app
-WORKDIR /usr/src/app
-
-# Adding fonts to system
+# Add custom fonts to system
 ADD ./fonts /usr/share/fonts/opentype/
 RUN fc-cache -f -v
 
-# Installing latest node
-RUN npm install n -g
-RUN n latest
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-# Installing yarn
+# Install yarn
 RUN npm install -g yarn
+
+# Install app dependencies
+COPY package.json /usr/src/app/
 RUN yarn
 
+# Bundle app source
+COPY . /usr/src/app
+
 EXPOSE 3000
+
 CMD [ "yarn", "start" ]

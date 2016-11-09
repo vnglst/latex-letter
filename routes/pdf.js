@@ -4,37 +4,19 @@ const fs = require('fs')
 const exec = require('child_process')
   .exec
 
-const defaultText =
-`
-Dear Friend,
-
-I am a bombardier in the second mounted division of the Fourth Horse Artillery.
-
-You may well imagine how astonished I was by this revolution in my affairs, and what a violent upheaval it has made in my everyday humdrum existence. Nevertheless I have borne the change with determination and courage, and even derive a certain pleasure from this turn of fortune. Now that I have an opportunity of doing a little athletic training I am more than ever thankful to our Schopenhauer. For the first five weeks I had to be in the stables. At 5:30 in the morning I had to be among the horses, removing the manure and grooming the animals down with the currycomb and horse brush. For the present my work lasts on an average from 7 a.m. to 10 a.m. and from 11.30 a.m. to 6 p.m., the greater part of which I spend in parade drill. Four times a week we two soldiers who are to serve for a year have to attend a lecture given by a lieutenant, to prepare us for the reserve officers examination. You must know that in the horse artillery there is a tremendous amount to learn. We get most fun out of the riding lessons. My horse is a very fine animal, and I am supposed to have some talent for riding. When I and my steed gallop round the large parade ground, I feel very contented with my lot. On the whole, too, I am very well treated. Above all, we have a very nice captain.
-
-I have now told you all about my life as a soldier. This is the reason why I have kept you waiting so long for news and for an answer to your last letter. Meanwhile, if I am not mistaken, you will probably have been freed from your military fetters; that is why I thought it would be best to address this letter to Spandau.
-
-But my time is already up; a business letter to Volkmann and another to Ritschl have robbed me of much of it. So I must stop in order to get ready for the parade in full kit.
-
-Well, old man, forgive my long neglect, and hold the god of War responsible for most of it.
-
-Your devoted friend,
-`
-
 const formBodyToMarkDown = ({
-  content = defaultText,
-  subject = ``,
-  author = `F. Nietzsche`,
-  city = `Naumburg`,
-  from1 = `Artillerieregiment, 8. Batt.`,
-  from2 = `Nordstraße 15, Naumburg`,
-  to1 = `Carl Freiherr von Gersdorff`,
-  to2 = `Stresow-Kaserne I`,
-  to3 = `Grenadierstraße 13–16`,
-  to4 = `13597 Spandau`,
+  content,
+  subject,
+  author,
+  city,
+  from1,
+  from2,
+  to1,
+  to2,
+  to3,
+  to4
 }) => {
-content = content || defaultText
-const markdown = `
+  const markdown = `
 ---
 subject: ${subject}
 author: ${author}
@@ -61,17 +43,21 @@ geometry: a4paper, left=35mm, right=35mm, top=50mm, bottom=25mm
 ${content}
 `
 
-return markdown
+  return markdown
 }
 
 router.post('/', (req, res) => {
-  const filePath = `letters/letter.md`
-  const letter = formBodyToMarkDown(req.body)
-  const cmd = `cd letters; make`
-  fs.writeFile(filePath, letter, () => {
-    exec(cmd, (error, stdout, stderr) => {
-      const outputPDF = 'letters/output.pdf'
-      const readStream = fs.createReadStream(outputPDF)
+  const timestamp = new Date()
+    .getTime()
+  const inputFile = `letters/letter${timestamp}.md`
+  const outputFile = `letters/output${timestamp}.pdf`
+  const letterContent = formBodyToMarkDown(req.body)
+  const cmd = `cd letters; pandoc ${inputFile} -o ${outputFile} --template=template.tex --latex-engine=xelatex`
+  fs.writeFile(inputFile, letterContent, () => {
+    exec(cmd, (err, stdout, stderr) => {
+      if (stderr) return res.send(stderr)
+      if (err) return res.send(err)
+      const readStream = fs.createReadStream(outputFile)
       readStream.pipe(res)
     })
   })

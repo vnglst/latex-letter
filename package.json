@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node --harmony-async-await ./bin/www",
-    "watch": "nodemon --harmony-async-await ./bin/www"
+    "watch": "nodemon --harmony-async-await ./bin/www",
+    "lint": "standard */**.js",
+    "fixlint": "standard */**.js --fix"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
@@ -18,5 +20,8 @@
     "pdfkit": "^0.8.0",
     "pug": "~2.0.0-beta6",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "standard": "^8.5.0"
   }
 }

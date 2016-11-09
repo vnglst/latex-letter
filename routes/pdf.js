@@ -23,6 +23,7 @@ const makePDF = (inputFile, outputFile) => {
 }
 
 router.post('/', (req, res) => {
+  spawn(`mkdir`, [`-p`, `user-letters`])
   const timestamp = new Date()
     .getTime()
   const inputFile = `user-letters/letter${timestamp}.md`

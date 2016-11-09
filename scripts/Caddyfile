@@ -1,0 +1,3 @@
+letter-api.koenvangilst.nl {
+  proxy / localhost:1844
+}

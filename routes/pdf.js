@@ -25,8 +25,8 @@ const makePDF = (inputFile, outputFile) => {
 router.post('/', (req, res) => {
   const timestamp = new Date()
     .getTime()
-  const inputFile = `tmp/letter${timestamp}.md`
-  const outputFile = `tmp/output${timestamp}.pdf`
+  const inputFile = `user-letters/letter${timestamp}.md`
+  const outputFile = `user-letters/output${timestamp}.pdf`
   const letterContent = formBodyToMarkDown(req.body)
   fs.writeFile(inputFile, letterContent, () => {
     makePDF(inputFile, outputFile)

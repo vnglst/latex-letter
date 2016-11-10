@@ -4,7 +4,7 @@ MAINTAINER Koen van Gilst <koen@koenvangilst.nl>
 
 # ENV PANDOC_VERSION "1.16.0.2"
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODEJS_VERSION 7.0.0
+ENV NODEJS_VERSION 7.1.0
 ENV PANDOC_VERSION "1.16.0.2"
 
 RUN apt-get update && apt-get install -y git git-core curl

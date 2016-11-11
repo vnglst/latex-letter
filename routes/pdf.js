@@ -1,4 +1,5 @@
 const express = require('express')
+const shortid = require('shortid')
 const router = express.Router()
 const fs = require('fs')
 const
@@ -23,11 +24,11 @@ const makePDF = (inputFile, outputFile) => {
 }
 
 router.post('/', (req, res) => {
+  // Make sure user-letters folder exists
   spawn(`mkdir`, [`-p`, `user-letters`])
-  const timestamp = new Date()
-    .getTime()
-  const inputFile = `user-letters/letter${timestamp}.md`
-  const outputFile = `user-letters/output${timestamp}.pdf`
+  const uniqueId = shortid.generate()
+  const inputFile = `user-letters/letter-${uniqueId}.md`
+  const outputFile = `user-letters/output-${uniqueId}.pdf`
   const letterContent = formBodyToMarkDown(req.body)
   fs.writeFile(inputFile, letterContent, () => {
     makePDF(inputFile, outputFile)

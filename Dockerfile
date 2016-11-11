@@ -6,10 +6,6 @@ MAINTAINER Koen van Gilst <koen@koenvangilst.nl>
 ADD . /usr/src/app
 WORKDIR /usr/src/app
 
-# Adding fonts to system
-ADD ./fonts /usr/share/fonts/opentype/
-RUN fc-cache -f -v
-
 # Installing packages with YARN
 RUN yarn
 

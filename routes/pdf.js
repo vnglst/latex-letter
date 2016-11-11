@@ -32,6 +32,9 @@ router.post('/', (req, res) => {
   fs.writeFile(inputFile, letterContent, () => {
     makePDF(inputFile, outputFile)
     const readStream = fs.createReadStream(outputFile)
+    // res.setHeader('Content-Length', stat.size)
+    res.setHeader('Content-Type', 'application/pdf')
+    res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf')
     readStream.pipe(res)
     cleanup(inputFile, outputFile)
   })

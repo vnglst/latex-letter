@@ -1,54 +1,59 @@
 extends layout
 block content
-  .row
-    .col-md-8
-      h1="Create a beautiful letter"
-      form.form-horizontal.well(method="post", action="/pdf")
+  .container
+    .center-block.letter
+      h1.text-center="Create a Beautiful Letter"
+      hr
+      form.form-horizontal(method="post", action="/pdf")
           .form-group
-              label.col-md-2.control-label Subject
-              .col-md-10
-                .input-group
-                  input.form-control(type="text", name="subject", value="My life as a soldier")
+              label.col-sm-2.control-label Subject
+              .col-sm-9
+                input.form-control(type="text", name="subject", value="My life as a soldier")
           .form-group
-              label.col-md-2.control-label Author
-              .col-md-10
-                .input-group
-                  input.form-control(type="text", name="author", value="F. Nietzsche")
+              label.col-sm-2.control-label Author
+              .col-sm-9
+                input.form-control(type="text", name="author", value="F. Nietzsche")
           .form-group
-              label.col-md-2.control-label City
-              .col-md-10
-                .input-group
-                  input.form-control(type="text", name="city", value="Naumburg")
+              label.col-sm-2.control-label City
+              .col-sm-9
+                input.form-control(type="text", name="city", value="Naumburg")
           .form-group
-              label.col-md-2.control-label From
-              .col-md-10
-                .input-group
-                  input.form-control(type="text", name="from1", value="Artillerieregiment, 8. Batt.")
+              label.col-sm-2.control-label From:
+              .col-sm-9
+                input.form-control(type="text", name="from1", value="Artillerieregiment, 8. Batt.")
           .form-group
-              .col-md-offset-2.col-md-10
-                .input-group
-                  input.form-control(type="text", name="from2", value="Nordstraße 15, Naumburg")
+              .col-sm-offset-2.col-sm-9
+                input.form-control(type="text", name="from2", value="Nordstraße 15, Naumburg")
           .form-group
-              label.col-md-2.control-label To
-              .col-md-10
-                .input-group
-                  input.form-control(type="text", name="to1", value="Carl Freiherr von Gersdorff")
+              label.col-sm-2.control-label To:
+              .col-sm-9
+                input.form-control(type="text", name="to1", value="Carl Freiherr von Gersdorff")
           .form-group
-              .col-md-offset-2.col-md-10
-                .input-group
-                  input.form-control(type="text", name="to2", value="Stresow-Kaserne I")
+              .col-sm-offset-2.col-sm-9
+                input.form-control(type="text", name="to2", value="Stresow-Kaserne I")
           .form-group
-              .col-md-offset-2.col-md-10
-                .input-group
-                  input.form-control(type="text", name="to3", value="Grenadierstraße 13–16")
+              .col-sm-offset-2.col-sm-9
+                input.form-control(type="text", name="to3", value="Grenadierstraße 13–16")
           .form-group
-              .col-md-offset-2.col-md-10
-                .input-group
-                  input.form-control(type="text", name="to4", value="13597 Spandau")
+              .col-sm-offset-2.col-sm-9
+                input.form-control(type="text", name="to4", value="13597 Spandau")
           .form-group
-              label.col-md-2.control-label Text
-              .col-md-10
+              label.col-sm-2.control-label Text
+              .col-sm-9
                 textarea.form-control(rows="8", name="content", placeholder="Dear Friend,\n\nI am a bombardier in the second mounted division of the Fourth Horse Artillery.\n\nYou may well imagine how astonished I was by this revolution in my affairs, and what a violent upheaval it has made in my everyday humdrum existence.")
           .form-group
-              .col-md-offset-2.col-md-10
-                input.btn.btn-default(type="submit", value="Create PDF")
+              .col-sm-offset-2.col-sm-9
+                input.btn.btn-primary(type="submit", value="Create PDF")
+      br
+      hr
+      footer
+         p.text-center
+           | Made by Koen van Gilst. Based upon the 
+           a(href="http://mrzool.cc/tex-boilerplates") beautiful LATEX boilerplates
+           |  by 
+           a(href="https://twitter.com/mrzool_") Mattia Tezzele
+           |  and the 
+           a(href="https://medium.com/@dimitrieh/a-curriculum-vitae-latex-typesetting-automation-adventure-with-gitlab-6ac233c0b66b#.57lf809qi") Docker image
+           |  by 
+           a(href="https://twitter.com/dimitrieh") Dimitrie Hoekstra
+           | .

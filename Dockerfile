@@ -9,5 +9,5 @@ WORKDIR /usr/src/app
 # Install packages with YARN
 RUN yarn
 
-EXPOSE 80
+EXPOSE 8080
 CMD [ "yarn", "start" ]

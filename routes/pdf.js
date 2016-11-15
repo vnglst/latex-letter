@@ -23,25 +23,39 @@ const makePDF = (inputFile, outputFile) => {
   }
 }
 
+const validInput = (body) => {
+  if (!body.subject) return false
+  if (!body.author) return false
+  if (!body.city) return false
+  if (!body.from1) return false
+  if (!body.from2) return false
+  if (!body.to1) return false
+  if (!body.to2) return false
+  if (!body.to3) return false
+  if (!body.to4) return false
+  return true
+}
+
 router.post('/', (req, res) => {
   // Make sure user-letters folder exists
   spawn(`mkdir`, [`-p`, `user-letters`])
   const uniqueId = shortid.generate()
   const inputFile = `user-letters/letter-${uniqueId}.md`
   const outputFile = `user-letters/output-${uniqueId}.pdf`
+  if (!validInput(req.body)) return res.send(`Incorrect data. Some form fields were empty.`)
   const letterContent = formBodyToMarkDown(req.body)
   fs.writeFile(inputFile, letterContent, () => {
     makePDF(inputFile, outputFile)
     const readStream = fs.createReadStream(outputFile)
-    // Getting file stats
+      // Getting file stats
     const stats = fs.statSync(outputFile)
-    // Setting file size
+      // Setting file size
     res.setHeader('Content-Length', stats.size)
     res.setHeader('Content-Type', 'application/pdf')
-    // Setting file name and type
+      // Setting file name and type
     res.setHeader('Content-Disposition', 'attachment; filename="letter.pdf"')
     readStream.pipe(res)
-    // Cleanup files
+      // Cleanup files
     cleanup(inputFile, outputFile)
   })
 })

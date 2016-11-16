@@ -24,7 +24,7 @@ const makePDF = (inputFile, outputFile) => {
 }
 
 const validInput = (body) => {
-  if (!body.subject) return false
+  if (!body.subject) return true // subject is not required
   if (!body.author) return false
   if (!body.city) return false
   if (!body.from1) return false

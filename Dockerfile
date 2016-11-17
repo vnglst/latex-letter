@@ -2,7 +2,7 @@ FROM vnglst/pandoc-nodejs-docker
 
 MAINTAINER Koen van Gilst <koen@koenvangilst.nl>
 
-# Add app
+# Add app source code
 ADD . /usr/src/app
 WORKDIR /usr/src/app
 

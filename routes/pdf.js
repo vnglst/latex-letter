@@ -18,6 +18,7 @@ const makePDF = (inputFile, outputFile) => {
        `--template=letter/template.tex`,
         `--latex-engine=xelatex`,
         `--latex-engine-opt=--disable-write18`
+        // this disables remote execution of random code in LaTeX (hopefully)
       ])
   const error = pandoc.stderr.toString()
   if (error) {
@@ -35,6 +36,7 @@ const validateInput = (body) => {
 }
 
 // Removes \ from user input string
+// Sanitize other characters
 const sanitize = (input) => {
   return input
     .replace(String.fromCharCode(92), ``)

@@ -36,7 +36,15 @@ const validateInput = (body) => {
 
 // Removes \ from user input string
 const sanitize = (input) => {
-  return input.replace(String.fromCharCode(92), ``)
+  return input
+    .replace(String.fromCharCode(92), ``)
+    .replace(`#`, `\\#`)
+    .replace(`%`, `\\%`)
+    .replace(`$`, `\\$`)
+    .replace(`^`, `\\^`)
+    .replace(`&`, `\\&`)
+    .replace(`{`, `\\{`)
+    .replace(`}`, `\\}`)
 }
 
 // Don't allow user to execute code on server using LaTeX

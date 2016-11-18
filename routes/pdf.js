@@ -36,6 +36,23 @@ const validInput = (body) => {
   return true
 }
 
+// Removes \ from user input string
+const sanitize = (input) => {
+  return input.replace(String.fromCharCode(92), ``)
+}
+
+// Don't allow user to execute code on server using LaTeX
+// E.g. \input{/etc/passwd}
+// Or even worse: \write18{rm -rf /}
+const sanitizeInput = (body) => {
+  console.log(body)
+  for (let prop in body) {
+    body[prop] = sanitize(body[prop])
+  }
+  console.log(body)
+  return body
+}
+
 router.post('/', (req, res) => {
   // Make sure user-letters folder exists
   spawn(`mkdir`, [`-p`, `user-letters`])
@@ -43,7 +60,7 @@ router.post('/', (req, res) => {
   const inputFile = `user-letters/letter-${uniqueId}.md`
   const outputFile = `user-letters/output-${uniqueId}.pdf`
   if (!validInput(req.body)) return res.send(`Incorrect data. Some form fields were empty.`)
-  const letterContent = formBodyToMarkDown(req.body)
+  const letterContent = formBodyToMarkDown(sanitizeInput(req.body))
   fs.writeFile(inputFile, letterContent, () => {
     makePDF(inputFile, outputFile)
     const readStream = fs.createReadStream(outputFile)

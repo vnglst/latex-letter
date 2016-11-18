@@ -23,12 +23,8 @@ const makePDF = (inputFile, outputFile) => {
   }
 }
 
-const validInput = (body) => {
-  if (!body.subject) return true // subject is not required
-  if (!body.author) return false
-  if (!body.city) return false
-  if (!body.from1) return false
-  if (!body.from2) return false
+const validateInput = (body) => {
+  // "To" fields are required for the LaTeX compiler
   if (!body.to1) return false
   if (!body.to2) return false
   if (!body.to3) return false
@@ -56,11 +52,19 @@ const sanitizeInput = (body) => {
 router.post('/', (req, res) => {
   // Make sure user-letters folder exists
   spawn(`mkdir`, [`-p`, `user-letters`])
+
   const uniqueId = shortid.generate()
   const inputFile = `user-letters/letter-${uniqueId}.md`
   const outputFile = `user-letters/output-${uniqueId}.pdf`
-  if (!validInput(req.body)) return res.send(`Incorrect data. Some form fields were empty.`)
+
+    // Validate user input
+  if (!validateInput(req.body)) {
+    return res.send(`Incorrect data. "To" form fields cannot be empty.`)
+  }
+
+    // Sanitize user input
   const letterContent = formBodyToMarkDown(sanitizeInput(req.body))
+
   fs.writeFile(inputFile, letterContent, () => {
     makePDF(inputFile, outputFile)
     const readStream = fs.createReadStream(outputFile)

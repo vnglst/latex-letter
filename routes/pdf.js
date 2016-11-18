@@ -16,7 +16,9 @@ const makePDF = (inputFile, outputFile) => {
       `-o`,
       `${outputFile}`,
        `--template=letter/template.tex`,
-        `--latex-engine=xelatex`])
+        `--latex-engine=xelatex`,
+        `--latex-engine-opt=--disable-write18`
+      ])
   const error = pandoc.stderr.toString()
   if (error) {
     console.log(error)

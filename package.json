@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node --harmony-async-await ./bin/www",
     "watch": "nodemon --harmony-async-await ./bin/www",
-    "lint": "standard **.js, bin/www",
-    "fixlint": "standard **.js, bin/www --fix"
+    "lint": "standard **/**.js",
+    "lint:fix": "standard **/**.js --fix"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
